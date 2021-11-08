@@ -1,11 +1,12 @@
 {
   "name": "friendlyis/mauticmultidomain",
+  "description": "Mautic Multi Domain Plugin - support multiple tracking domains",
   "type": "mautic-plugin",
   "license": "MIT",
+  "require": {
+    "mautic/core-lib": "^4.0"
+  },
   "extra": {
     "install-directory-name": "MauticMultiDomainBundle"
-  },
-  "require": {
-    "mautic/composer-plugin": "*"
   }
 }
