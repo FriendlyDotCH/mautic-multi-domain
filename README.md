@@ -9,5 +9,13 @@ Upload the zip package to your plugins/ folder
 Unzip
 Refresh plugins
 
+# Composer Installation (Mautic 4)
+```shell
+# add the plugin to your project composer.json
+composer require friendlyis/mauticmultidomain
+# clear cache
+php bin/console cache:clear --env=prod
+```
+
 # Next steps
 Create option to change URL for images as well
