@@ -14,7 +14,7 @@ return [
             'mautic_multidomain_action' => [
                 'path'       => '/multidomain/{objectAction}/{objectId}',
                 'controller' => 'MauticMultiDomainBundle:Multidomain:execute',
-            ],            
+            ],
         ],
     ],
     'menu' => [
@@ -25,7 +25,7 @@ return [
                 'iconClass' => 'fa-globe',
             ],
         ],
-    ],  
+    ],
     'services' => [
         'forms' => [
             'mautic.form.type.multidomain' => [
@@ -75,7 +75,14 @@ return [
                     'router',
                 ],
             ],
+            'mautic.multidomain.subscriber.buildjssubscriber' => [
+                'class'     => \MauticPlugin\MauticMultiDomainBundle\EventListener\BuildJsSubscriber::class,
+                'arguments' => [
+                    'templating.helper.assets',
+                    'request_stack',
+                    'router',
+                ],
+            ],
         ],
-    ], 
-    
+    ],
 ];
