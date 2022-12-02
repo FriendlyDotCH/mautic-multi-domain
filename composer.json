@@ -1,0 +1,11 @@
+{
+  "name": "friendlyis/mauticmultidomain",
+  "type": "mautic-plugin",
+  "license": "MIT",
+  "extra": {
+    "install-directory-name": "MauticMultiDomainBundle"
+  },
+  "require": {
+    "mautic/composer-plugin": "*"
+  }
+}
