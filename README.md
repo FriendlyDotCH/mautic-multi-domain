@@ -2,11 +2,14 @@
 
 # Key features
 
-Replaces the tracking domain in your emails based on the sender email address.
+- Replaces the tracking domain in your emails based on the sender email address.
+- The plugin replaces list unsubscribe, image pixel, webview and unsubscribe tokens.
+- This plugin also rewrites all the tracking javascript domains to the domain from the http request
+if your Mautic domain is https://mautic.example.com and tracking js is loaded from from a CNAME, https://trk.example.net all of the domains used inside the tracking javascript will be `trk.example.net` (rather than `mautic.example.com`) to avoid the appearance of third-paty requests.
 
-The plugin replaces list unsubscribe, image pixel, webview and unsubscribe tokens.
+# What does it do and why you need it:
+https://www.youtube.com/watch?v=O8_pcHMXV-M
 
-This plugin also rewrites all the tracking javascript domains to the domain from the http request e.g. if your Mautic domain is https://mautic.example.com and tracking js is loaded from from a CNAME, https://trk.example.net all of the domains used inside the tracking javascript will be `trk.example.net` (rather than `mautic.example.com`) to avoid the appearance of third-paty requests.
 
 # Installation
 
@@ -24,15 +27,12 @@ php bin/console cache:clear --env=prod # or delete var/cache/prod/*
 * Rename the plugin folder to `MauticMultiDomainBundle`
 * Refresh plugins
 
-
 # Next steps
 
-Create option to change URL for images as well.
+- Create option to change URL for images as well.
+- Better how to guides
 
 # Credits
 
-This bundle is a fork of https://github.com/friendly-ch/mautic-multi-domain - the vast majority of code comes from that project and it's respective authors.
-
-This fork adds some additional features and changes behaviour based on my specific use cases.
-
-As such no backwards compatibility is implied or guaranteed.
+Original work: https://github.com/friendly-ch/mautic-multi-domain
+Amazing upgrade done by: https://github.com/rjocoleman
