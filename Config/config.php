@@ -16,6 +16,14 @@ return [
                 'controller' => 'MauticMultiDomainBundle:Multidomain:execute',
             ],
         ],
+        'api' => [
+            'mautic_api_multidomainstandard' => [
+                'standard_entity' => true,
+                'name' => 'multidomain',
+                'path' => '/multidomain',
+                'controller' => 'MauticMultiDomainBundle:Api\MultidomainApi',
+            ],
+        ],
     ],
     'menu' => [
         'main' => [
