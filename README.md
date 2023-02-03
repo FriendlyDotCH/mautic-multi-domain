@@ -86,7 +86,7 @@ body parameters:
 * email
 * domain
 - Edit an existing multidomain entry:
-PUT /multidomain/ID/edit
+'PUT /multidomain/ID/edit'
 PATCH /multidomain/ID/edit
 body parameters:
 * email
