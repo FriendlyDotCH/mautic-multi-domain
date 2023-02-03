@@ -77,22 +77,22 @@ https://github.com/MPCKowalski and https://github.com/cubitt0
 REST API capability allows you the follwoings:
 
 - Get info of a domain:
-GET /multidomain/ID
+`GET /multidomain/ID`
 - List all multidomain entries:
-GET /multidomain
+`GET /multidomain`
 - Create new multidomain entry:
-POST /multidomain/new
+`POST /multidomain/new`
 body parameters:
-* email
-* domain
+`* email
+* domain`
 - Edit an existing multidomain entry:
-'PUT /multidomain/ID/edit'
-PATCH /multidomain/ID/edit
+`PUT /multidomain/ID/edit`
+`PATCH /multidomain/ID/edit`
 body parameters:
-* email
-* domain
+`* email
+* domain`
 - Delete Multidomain entry:
-DEL /multidomain/ID/delete
+`DEL /multidomain/ID/delete`
 
 # Next steps
 
