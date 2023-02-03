@@ -137,7 +137,7 @@ class BuilderSubscriber implements EventSubscriberInterface
         // Check if the Mailer is Owner is set, if not then search the sender email from Email channels From address
         // And finally if nothing is set, use the mailer from email if it is not blank.
         if($this->coreParametersHelper->get('mailer_is_owner') && $lead['id']){
-            $senderEmail = $lead->getEmail();
+            $senderEmail = $lead['email'];
         }else if($email && $email->getFromAddress()){
             $senderEmail = $email->getFromAddress();
         }else{
