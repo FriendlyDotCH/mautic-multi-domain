@@ -70,6 +70,30 @@ php bin/console cache:clear --env=prod # or delete var/cache/prod/*
 * Rename the plugin folder to `MauticMultiDomainBundle`
 * Refresh plugins
 
+# API
+in version 1.3 Amazing API upgrade from
+https://github.com/MPCKowalski and https://github.com/cubitt0
+
+REST API capability allows you the follwoings:
+
+- Get info of a domain:
+GET /multidomain/ID
+- List all multidomain entries:
+GET /multidomain
+- Create new multidomain entry:
+POST /multidomain/new
+body parameters:
+* email
+* domain
+- Edit an existing multidomain entry:
+PUT /multidomain/ID/edit
+PATCH /multidomain/ID/edit
+body parameters:
+* email
+* domain
+- Delete Multidomain entry:
+DEL /multidomain/ID/delete
+
 # Next steps
 
 - Create option to change URL for images as well.
