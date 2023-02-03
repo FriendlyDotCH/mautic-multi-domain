@@ -82,15 +82,11 @@ REST API capability allows you the follwoings:
 `GET /multidomain`
 - Create new multidomain entry:
 `POST /multidomain/new`
-body parameters:
-`* email
-* domain`
+body parameters: email, domain
 - Edit an existing multidomain entry:
 `PUT /multidomain/ID/edit`
 `PATCH /multidomain/ID/edit`
-body parameters:
-`* email
-* domain`
+body parameters: email, domain
 - Delete Multidomain entry:
 `DEL /multidomain/ID/delete`
 
