@@ -90,6 +90,10 @@ body parameters: email, domain
 - Delete Multidomain entry:
 `DEL /multidomain/ID/delete`
 
+# Permissions
+Thanks to surge.media since release 1.4 the plugin obeys the Mauic permissions system.
+New roles can be set.
+
 # Next steps
 
 - Create option to change URL for images as well.
