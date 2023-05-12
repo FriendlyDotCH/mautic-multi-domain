@@ -164,7 +164,7 @@ class BuilderSubscriber implements EventSubscriberInterface
         if (!$webviewText) {
             $webviewText = $this->translator->trans('mautic.email.webview.text', ['%link%' => '|URL|']);
         }
-        $webviewText = str_replace('|URL|', $this->buildUrl('mautic_email_preview', ['idHash' => $idHash], true, [], [], $senderDomain), $webviewText);
+        $webviewText = str_replace('|URL|', $this->buildUrl('mautic_email_webview', ['idHash' => $idHash], true, [], [], $senderDomain), $webviewText);
         $event->addToken('{webview_text}', EmojiHelper::toHtml($webviewText));
 
         // Show public email preview if the lead is not known to prevent 404
