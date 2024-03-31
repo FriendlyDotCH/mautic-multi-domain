@@ -143,10 +143,14 @@ class BuilderSubscriber implements EventSubscriberInterface
         $senderEmail         = $this->coreParametersHelper->get("mailer_from_email");
         $mailerIsOwnerGlobal = $this->coreParametersHelper->get('mailer_is_owner');
         $mailerIsOwner       = $email->getUseOwnerAsMailer();
+
         if(($mailerIsOwnerGlobal || $mailerIsOwner) && $lead['id']){
-            $tokens      = $event->getTokens();
-            $senderEmail = $tokens['{ownerfield=email}'] ?? $senderEmail;
-        }else if($email && $email->getFromAddress()){
+            $ownerEmail      = $event->getTokens()['{ownerfield=email}'] ?? null;
+            if (!empty($ownerEmail)) {
+                $senderEmail = $ownerEmail;
+            }
+        }
+        if(empty($ownerEmail) && $email && $email->getFromAddress()){
             $senderEmail = $email->getFromAddress();
         }
 
