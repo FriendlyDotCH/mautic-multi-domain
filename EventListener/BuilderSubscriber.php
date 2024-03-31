@@ -124,7 +124,11 @@ class BuilderSubscriber implements EventSubscriberInterface
         $lead   = $event->getLead();
         $email  = $event->getEmail();
         $senderEmail = null;
-        $senderDomain = null; 
+        $senderDomain = null;
+
+        if(!$email instanceof  Email){
+            return;
+        }
 
         if (null == $idHash) {
             // Generate a bogus idHash to prevent errors for routes that may include it
@@ -136,12 +140,18 @@ class BuilderSubscriber implements EventSubscriberInterface
         
         // Check if the Mailer is Owner is set, if not then search the sender email from Email channels From address
         // And finally if nothing is set, use the mailer from email if it is not blank.
-        if($this->coreParametersHelper->get('mailer_is_owner') && $lead['id']){
-            $senderEmail = $lead['email'];
-        }else if($email && $email->getFromAddress()){
+        $senderEmail         = $this->coreParametersHelper->get("mailer_from_email");
+        $mailerIsOwnerGlobal = $this->coreParametersHelper->get('mailer_is_owner');
+        $mailerIsOwner       = $email->getUseOwnerAsMailer();
+
+        if(($mailerIsOwnerGlobal || $mailerIsOwner) && $lead['id']){
+            $ownerEmail      = $event->getTokens()['{ownerfield=email}'] ?? null;
+            if (!empty($ownerEmail)) {
+                $senderEmail = $ownerEmail;
+            }
+        }
+        if(empty($ownerEmail) && $email && $email->getFromAddress()){
             $senderEmail = $email->getFromAddress();
-        }else{
-            $senderEmail = $this->coreParametersHelper->get("mailer_from_email");
         }
 
         if($senderEmail){
