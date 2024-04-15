@@ -146,10 +146,13 @@ class BuilderSubscriber implements EventSubscriberInterface
 
         if($senderEmail){
             // Get the Domain from the MultiDomain Configuration by email.
-            $multiDomian = $this->multidomainModel->getRepository()->findOneBy(['email' => $senderEmail]);
-            if($multiDomian){
-                $senderDomain = $multiDomian->getDomain();
+            $multiDomain = $this->multidomainModel->getRepository()->findOneBy(['email' => $senderEmail]);
+            if($multiDomain){
+                $senderDomain = $multiDomain->getDomain();
+                $messageId = $this->multidomainModel->generateMessageId($multiDomain);
+                $event->addTextHeader('Message-ID', $messageId);
             }
+
         }
         
         if (!$unsubscribeText) {
