@@ -168,6 +168,17 @@ class MultidomainModel extends FormModel
         $this->getRepository()->saveEntity($entity);
     }
 
+    public function generateMessageId(Multidomain $multidomain) {
+        $url = $multidomain->getDomain();
+        $parts = parse_url($url);
+        if (!isset($parts['host'])) {
+            throw new \Exception("InvalidDomainError");
+        }
+
+        $messageIdSuffix = '@' . $parts['host'];
+        return bin2hex(random_bytes(16)).$messageIdSuffix;
+    }
+
     
     /**
      * Get whether the color is light or dark.
