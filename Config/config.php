@@ -4,7 +4,7 @@ return [
     'name'        => 'Multidomain',
     'description' => 'User can add multiple tracking domains for emails.',
     'author'      => 'Abdullah Kiser / Friendly Automate',
-    'version'     => '1.0.1',
+    'version'     => '5.0.0',
     'routes'      => [
         'main' => [
             'mautic_multidomain_index' => [
