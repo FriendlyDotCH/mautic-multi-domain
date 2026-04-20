@@ -14,8 +14,8 @@ use Symfony\Component\Routing\RouterInterface;
 class FormContextSubscriber implements EventSubscriberInterface
 {
     private const FORM_GENERATE_ROUTE = 'mautic_form_generateform';
-    private const FORM_PREVIEW_ROUTE = 'mautic_form_preview';
-    private const FORM_ACTION_ROUTE = 'mautic_form_action';
+    private const FORM_PREVIEW_ROUTE  = 'mautic_form_preview';
+    private const FORM_ACTION_ROUTE   = 'mautic_form_action';
 
     public function __construct(
         private AssetsHelper $assetsHelper,
@@ -54,15 +54,15 @@ class FormContextSubscriber implements EventSubscriberInterface
     {
         $route = $request->attributes->get('_route');
 
-        if ($route === null) {
+        if (null === $route) {
             return false;
         }
 
         return match ($route) {
             self::FORM_GENERATE_ROUTE => true,
-            self::FORM_PREVIEW_ROUTE => true,
-            self::FORM_ACTION_ROUTE => $request->attributes->get('objectAction') === 'view',
-            default => false,
+            self::FORM_PREVIEW_ROUTE  => true,
+            self::FORM_ACTION_ROUTE   => 'view' === $request->attributes->get('objectAction'),
+            default                   => false,
         };
     }
 

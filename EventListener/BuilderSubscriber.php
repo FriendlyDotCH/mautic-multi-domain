@@ -145,7 +145,6 @@ class BuilderSubscriber implements EventSubscriberInterface
                 $messageId    = $this->multidomainModel->generateMessageId($multiDomain);
                 $event->addTextHeader('Message-ID', $messageId);
             }
-
         }
 
         if (!$unsubscribeText) {

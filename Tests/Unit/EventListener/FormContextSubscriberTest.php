@@ -49,7 +49,7 @@ class FormContextSubscriberTest extends TestCase
     public function testSetsSiteUrlForMatchingRoutes(string $url, string $route, array $params, string $expectedHost): void
     {
         $request = Request::create($url);
-        $event = $this->createMainRequestEvent($request, $route, $params);
+        $event   = $this->createMainRequestEvent($request, $route, $params);
 
         $this->subscriber->onKernelRequest($event);
 
@@ -96,10 +96,10 @@ class FormContextSubscriberTest extends TestCase
     public function testDoesNotModifyContextForNonMatchingRoutes(?string $route, array $params, string $url): void
     {
         $request = Request::create($url);
-        $event = $this->createMainRequestEvent($request, $route, $params);
+        $event   = $this->createMainRequestEvent($request, $route, $params);
 
         $initialBaseUrl = $this->assetsHelper->getBaseUrl();
-        $initialHost = $this->routerContext->getHost();
+        $initialHost    = $this->routerContext->getHost();
 
         $this->subscriber->onKernelRequest($event);
 
@@ -125,7 +125,7 @@ class FormContextSubscriberTest extends TestCase
         $request = Request::create('http://trk.example.com/form/generate.js');
         $request->attributes->set('_route', 'mautic_form_generateform');
         $kernel = $this->createMock(HttpKernelInterface::class);
-        $event = new RequestEvent($kernel, $request, HttpKernelInterface::SUB_REQUEST);
+        $event  = new RequestEvent($kernel, $request, HttpKernelInterface::SUB_REQUEST);
 
         $initialBaseUrl = $this->assetsHelper->getBaseUrl();
 
@@ -139,7 +139,7 @@ class FormContextSubscriberTest extends TestCase
      */
     private function createMainRequestEvent(Request $request, ?string $route = null, array $params = []): RequestEvent
     {
-        if ($route !== null) {
+        if (null !== $route) {
             $request->attributes->set('_route', $route);
             foreach ($params as $key => $value) {
                 $request->attributes->set($key, $value);
