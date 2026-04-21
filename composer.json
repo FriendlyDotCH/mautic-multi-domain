@@ -4,7 +4,7 @@
   "type": "mautic-plugin",
   "license": "MIT",
   "require": {
-    "mautic/core-lib": "^4.0"
+    "mautic/core-lib": "^5"
   },
   "extra": {
     "install-directory-name": "MauticMultiDomainBundle",
