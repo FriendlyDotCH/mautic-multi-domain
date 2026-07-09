@@ -43,9 +43,8 @@ class FormContextSubscriberTest extends TestCase
 
     /**
      * @param array<string, mixed> $params
-     *
-     * @dataProvider provideMatchingRoutes
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('provideMatchingRoutes')]
     public function testSetsSiteUrlForMatchingRoutes(string $url, string $route, array $params, string $expectedHost): void
     {
         $request = Request::create($url);
@@ -90,9 +89,8 @@ class FormContextSubscriberTest extends TestCase
 
     /**
      * @param array<string, mixed> $params
-     *
-     * @dataProvider provideNonMatchingRoutes
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('provideNonMatchingRoutes')]
     public function testDoesNotModifyContextForNonMatchingRoutes(?string $route, array $params, string $url): void
     {
         $request = Request::create($url);

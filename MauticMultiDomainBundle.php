@@ -37,7 +37,7 @@ class MauticMultiDomainBundle extends PluginBundleBase
 
         /** @var \Doctrine\ORM\Mapping\ClassMetadata $meta */
         foreach ($allMetadata as $meta) {
-            if (false === strpos($meta->namespace, 'MauticPlugin\\MauticMultiDomainBundle')) {
+            if (!str_contains($meta->namespace, 'MauticPlugin\\MauticMultiDomainBundle')) {
                 continue;
             }
 

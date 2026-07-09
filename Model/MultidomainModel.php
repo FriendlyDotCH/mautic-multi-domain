@@ -17,7 +17,6 @@ use MauticPlugin\MauticMultiDomainBundle\Entity\Multidomain;
 use MauticPlugin\MauticMultiDomainBundle\Event\MultidomainEvent;
 use MauticPlugin\MauticMultiDomainBundle\Form\Type\MultidomainType;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -26,34 +25,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 class MultidomainModel extends FormModel
 {
     /**
-     * @var ContainerAwareEventDispatcher
-     */
-    // protected $dispatcher;
-
-    /**
-     * @var \Mautic\FormBundle\Model\FormModel
-     */
-    protected $formModel;
-
-    /**
-     * @var TrackableModel
-     */
-    protected $trackableModel;
-
-    /**
      * @var TemplatingHelper
      */
     protected $templating;
-
-    /**
-     * @var FieldModel
-     */
-    protected $leadFieldModel;
-
-    /**
-     * @var ContactTracker
-     */
-    protected $contactTracker;
 
     /**
      * @var EntityManager
@@ -69,10 +43,10 @@ class MultidomainModel extends FormModel
         UserHelper $userHelper,
         LoggerInterface $logger,
         CoreParametersHelper $coreParametersHelper,
-        \Mautic\FormBundle\Model\FormModel $formModel,
-        TrackableModel $trackableModel,
-        FieldModel $leadFieldModel,
-        ContactTracker $contactTracker
+        protected \Mautic\FormBundle\Model\FormModel $formModel,
+        protected TrackableModel $trackableModel,
+        protected FieldModel $leadFieldModel,
+        protected ContactTracker $contactTracker,
     ) {
         parent::__construct(
             $em,
@@ -84,11 +58,6 @@ class MultidomainModel extends FormModel
             $logger,
             $coreParametersHelper
         );
-
-        $this->formModel      = $formModel;
-        $this->trackableModel = $trackableModel;
-        $this->leadFieldModel = $leadFieldModel;
-        $this->contactTracker = $contactTracker;
     }
 
     /**
@@ -132,7 +101,6 @@ class MultidomainModel extends FormModel
      *
      * @param object                              $entity
      * @param \Symfony\Component\Form\FormFactory $formFactory
-     * @param null                                $action
      * @param array                               $options
      *
      * @throws NotFoundHttpException
@@ -162,8 +130,6 @@ class MultidomainModel extends FormModel
 
     /**
      * {@inheritdoc}
-     *
-     * @param null $id
      *
      * @return Multidomain
      */
@@ -225,7 +191,7 @@ class MultidomainModel extends FormModel
      *
      * @throws MethodNotAllowedHttpException
      */
-    protected function dispatchEvent($action, &$entity, $isNew = false, Event $event = null): ?Event
+    protected function dispatchEvent($action, &$entity, $isNew = false, ?Event $event = null): ?Event
     {
         if (!$entity instanceof Multidomain) {
             throw new MethodNotAllowedHttpException(['Multidomain']);
@@ -257,9 +223,9 @@ class MultidomainModel extends FormModel
             $this->dispatcher->dispatch($event, $name);
 
             return $event;
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     // Get path of the config.php file.

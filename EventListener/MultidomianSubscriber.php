@@ -9,7 +9,6 @@ use Mautic\CoreBundle\Helper\IpLookupHelper;
 use Mautic\CoreBundle\Model\AuditLogModel;
 use Mautic\LeadBundle\Entity\Lead;
 use Mautic\LeadBundle\Helper\TokenHelper;
-use Mautic\PageBundle\Entity\Trackable;
 use Mautic\PageBundle\Helper\TokenHelper as PageTokenHelper;
 use Mautic\PageBundle\Model\TrackableModel;
 use MauticPlugin\MauticMultiDomainBundle\Event\MultidomainEvent;
@@ -23,64 +22,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 class MultidomianSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var IpLookupHelper
-     */
-    private $ipHelper;
-
-    /**
-     * @var AuditLogModel
-     */
-    private $auditLogModel;
-
-    /**
-     * @var TrackableModel
-     */
-    private $trackableModel;
-
-    /**
-     * @var PageTokenHelper
-     */
-    private $pageTokenHelper;
-
-    /**
-     * @var AssetTokenHelper
-     */
-    private $assetTokenHelper;
-
-    /**
-     * @var MultidomainModel
-     */
-    private $multidomainModel;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    public function __construct(
-        RouterInterface $router,
-        IpLookupHelper $ipLookupHelper,
-        AuditLogModel $auditLogModel,
-        TrackableModel $trackableModel,
-        PageTokenHelper $pageTokenHelper,
-        AssetTokenHelper $assetTokenHelper,
-        MultidomainModel $multidomainModel,
-        RequestStack $requestStack
-    ) {
-        $this->router                 = $router;
-        $this->ipHelper               = $ipLookupHelper;
-        $this->auditLogModel          = $auditLogModel;
-        $this->trackableModel         = $trackableModel;
-        $this->pageTokenHelper        = $pageTokenHelper;
-        $this->assetTokenHelper       = $assetTokenHelper;
-        $this->multidomainModel       = $multidomainModel;
-        $this->requestStack           = $requestStack;
+    public function __construct(private RouterInterface $router, private IpLookupHelper $ipHelper, private AuditLogModel $auditLogModel, private TrackableModel $trackableModel, private PageTokenHelper $pageTokenHelper, private AssetTokenHelper $assetTokenHelper, private MultidomainModel $multidomainModel, private RequestStack $requestStack)
+    {
     }
 
     /**
@@ -99,7 +42,7 @@ class MultidomianSubscriber implements EventSubscriberInterface
     /*
      * Check and hijack the form's generate link if the ID has mf- in it
      */
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         if ($event->isMainRequest()) {
             // get the current event request
@@ -108,9 +51,9 @@ class MultidomianSubscriber implements EventSubscriberInterface
 
             $formGenerateUrl = $this->router->generate('mautic_form_generateform');
 
-            if (false !== strpos($requestUri, $formGenerateUrl)) {
+            if (str_contains($requestUri, $formGenerateUrl)) {
                 $id = InputHelper::_($this->requestStack->getCurrentRequest()->get('id'));
-                if (0 === strpos($id, 'mf-')) {
+                if (str_starts_with($id, 'mf-')) {
                     $mfId                   = str_replace('mf-', '', $id);
                     $multidomainGenerateUrl = $this->router->generate('mautic_multidomain_action', ['id' => $mfId]);
 
@@ -123,7 +66,7 @@ class MultidomianSubscriber implements EventSubscriberInterface
     /**
      * Add an entry to the audit log.
      */
-    public function onMultidomainPostSave(MultidomainEvent $event)
+    public function onMultidomainPostSave(MultidomainEvent $event): void
     {
         $entity = $event->getMultidomain();
         if ($details = $event->getChanges()) {
@@ -143,7 +86,7 @@ class MultidomianSubscriber implements EventSubscriberInterface
     /**
      * Add a delete entry to the audit log.
      */
-    public function onMultidomainDelete(MultidomainEvent $event)
+    public function onMultidomainDelete(MultidomainEvent $event): void
     {
         $entity = $event->getMultidomain();
         $log    = [
@@ -157,7 +100,7 @@ class MultidomianSubscriber implements EventSubscriberInterface
         $this->auditLogModel->writeToLog($log);
     }
 
-    public function onTokenReplacement(MauticEvents\TokenReplacementEvent $event)
+    public function onTokenReplacement(MauticEvents\TokenReplacementEvent $event): void
     {
         /** @var Lead $lead */
         $lead         = $event->getLead();
@@ -174,7 +117,7 @@ class MultidomianSubscriber implements EventSubscriberInterface
                 $tokens = array_merge($tokens, TokenHelper::findLeadTokens($content, $lead->getProfileFields()));
             }
 
-            list($content, $trackables) = $this->trackableModel->parseContentForTrackables(
+            [$content, $trackables] = $this->trackableModel->parseContentForTrackables(
                 $content,
                 $tokens,
                 'multidomain',
@@ -183,10 +126,6 @@ class MultidomianSubscriber implements EventSubscriberInterface
 
             $multidomain = $this->multidomainModel->getEntity($clickthrough['multidomain_id']);
 
-            /**
-             * @var string
-             * @var Trackable $trackable
-             */
             foreach ($trackables as $token => $trackable) {
                 $tokens[$token] = $this->trackableModel->generateTrackableUrl($trackable, $clickthrough, false, $multidomain->getUtmTags());
             }

@@ -14,14 +14,12 @@ class MultidomainApiController extends CommonApiController
     /**
      * {@inheritdoc}
      */
-    public function initialize(FilterControllerEvent $event)
+    public function initialize(FilterControllerEvent $event): void
     {
         $this->model            = $this->getModel('multidomain');
         $this->entityClass      = Multidomain::class;
         $this->entityNameOne    = 'multidomain';
         $this->entityNameMulti  = 'multidomain';
         $this->serializerGroups = ['multidomainDetails', 'publishDetails'];
-
-        parent::initialize($event);
     }
 }

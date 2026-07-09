@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class MultidomainType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('email', TextType::class, [

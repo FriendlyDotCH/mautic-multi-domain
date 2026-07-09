@@ -4,7 +4,8 @@
   "type": "mautic-plugin",
   "license": "MIT",
   "require": {
-    "mautic/core-lib": "^5"
+    "php": ">=8.2.0 <8.6",
+    "mautic/core-lib": "^7.0"
   },
   "extra": {
     "install-directory-name": "MauticMultiDomainBundle",

@@ -32,7 +32,7 @@ class MultidomainEvent extends CommonEvent
     /**
      * Sets the Multidomain entity.
      */
-    public function setMultidomain(Multidomain $multidomain)
+    public function setMultidomain(Multidomain $multidomain): void
     {
         $this->entity = $multidomain;
     }

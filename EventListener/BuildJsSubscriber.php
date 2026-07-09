@@ -11,29 +11,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 class BuildJsSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var AssetsHelper
-     */
-    private $assetsHelper;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    public function __construct(
-        AssetsHelper $assetsHelper,
-        RequestStack $requestStack,
-        RouterInterface $router
-    ) {
-        $this->assetsHelper   = $assetsHelper;
-        $this->requestStack   = $requestStack;
-        $this->router         = $router;
+    public function __construct(private AssetsHelper $assetsHelper, private RequestStack $requestStack, private RouterInterface $router)
+    {
     }
 
     /**
@@ -48,7 +27,7 @@ class BuildJsSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onBuildJs(BuildJsEvent $event)
+    public function onBuildJs(BuildJsEvent $event): void
     {
         // PageBundle -> $pageTrackingUrl, $pageTrackingCORSUrl, $contactIdUrl
         $context = $this->router->getContext();

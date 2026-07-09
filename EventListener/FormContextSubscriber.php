@@ -19,7 +19,7 @@ class FormContextSubscriber implements EventSubscriberInterface
 
     public function __construct(
         private AssetsHelper $assetsHelper,
-        private RouterInterface $router
+        private RouterInterface $router,
     ) {
     }
 

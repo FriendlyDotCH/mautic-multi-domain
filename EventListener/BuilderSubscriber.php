@@ -21,64 +21,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BuilderSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var CoreParametersHelper
-     */
-    private $coreParametersHelper;
-
-    /**
-     * @var EmailModel
-     */
-    private $emailModel;
-
-    /**
-     * @var TrackableModel
-     */
-    private $pageTrackableModel;
-
-    /**
-     * @var RedirectModel
-     */
-    private $pageRedirectModel;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
-
-    /**
-     * @var MultidomainModel
-     */
-    private $multidomainModel;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    public function __construct(
-        CoreParametersHelper $coreParametersHelper,
-        EmailModel $emailModel,
-        TrackableModel $trackableModel,
-        RedirectModel $redirectModel,
-        TranslatorInterface $translator,
-        EntityManager $entityManager,
-        MultidomainModel $multidomainModel,
-        RouterInterface $router
-    ) {
-        $this->coreParametersHelper = $coreParametersHelper;
-        $this->emailModel           = $emailModel;
-        $this->pageTrackableModel   = $trackableModel;
-        $this->pageRedirectModel    = $redirectModel;
-        $this->translator           = $translator;
-        $this->entityManager        = $entityManager;
-        $this->multidomainModel     = $multidomainModel;
-        $this->router               = $router;
+    public function __construct(private CoreParametersHelper $coreParametersHelper, private EmailModel $emailModel, private TrackableModel $pageTrackableModel, private RedirectModel $pageRedirectModel, private TranslatorInterface $translator, private EntityManager $entityManager, private MultidomainModel $multidomainModel, private RouterInterface $router)
+    {
     }
 
     /**
@@ -100,7 +44,7 @@ class BuilderSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onEmailGenerate(EmailSendEvent $event)
+    public function onEmailGenerate(EmailSendEvent $event): void
     {
         $idHash       = $event->getIdHash();
         $lead         = $event->getLead();
@@ -150,22 +94,22 @@ class BuilderSubscriber implements EventSubscriberInterface
         if (!$unsubscribeText) {
             $unsubscribeText = $this->translator->trans('mautic.email.unsubscribe.text', ['%link%' => '|URL|']);
         }
-        $unsubscribeText = str_replace('|URL|', $this->buildUrl('mautic_email_unsubscribe', ['idHash' => $idHash], true, [], [], $senderDomain), $unsubscribeText);
+        $unsubscribeText = str_replace('|URL|', $this->buildUrl('mautic_email_unsubscribe', ['idHash' => $idHash], true, [], $senderDomain), $unsubscribeText);
         $event->addToken('{unsubscribe_text}', EmojiHelper::toHtml($unsubscribeText));
 
-        $event->addToken('{unsubscribe_url}', $this->buildUrl('mautic_email_unsubscribe', ['idHash' => $idHash], true, [], [], $senderDomain));
+        $event->addToken('{unsubscribe_url}', $this->buildUrl('mautic_email_unsubscribe', ['idHash' => $idHash], true, [], $senderDomain));
 
         if (!$webviewText) {
             $webviewText = $this->translator->trans('mautic.email.webview.text', ['%link%' => '|URL|']);
         }
-        $webviewText = str_replace('|URL|', $this->buildUrl('mautic_email_webview', ['idHash' => $idHash], true, [], [], $senderDomain), $webviewText);
+        $webviewText = str_replace('|URL|', $this->buildUrl('mautic_email_webview', ['idHash' => $idHash], true, [], $senderDomain), $webviewText);
         $event->addToken('{webview_text}', EmojiHelper::toHtml($webviewText));
 
         // Show public email preview if the lead is not known to prevent 404
         if (empty($lead['id']) && $email) {
-            $event->addToken('{webview_url}', $this->buildUrl('mautic_email_preview', ['objectId' => $email->getId()], true, [], [], $senderDomain));
+            $event->addToken('{webview_url}', $this->buildUrl('mautic_email_preview', ['objectId' => $email->getId()], true, [], $senderDomain));
         } else {
-            $event->addToken('{webview_url}', $this->buildUrl('mautic_email_webview', ['idHash' => $idHash], true, [], [], $senderDomain));
+            $event->addToken('{webview_url}', $this->buildUrl('mautic_email_webview', ['idHash' => $idHash], true, [], $senderDomain));
         }
 
         $signatureText = $this->coreParametersHelper->get('default_signature_text');
@@ -175,10 +119,7 @@ class BuilderSubscriber implements EventSubscriberInterface
         $event->addToken('{subject}', EmojiHelper::toHtml($event->getSubject()));
     }
 
-    /**
-     * @return array
-     */
-    public function convertUrlsToTokens(EmailSendEvent $event)
+    public function convertUrlsToTokens(EmailSendEvent $event): void
     {
         if ($event->isInternalSend() || $this->coreParametersHelper->get('disable_trackable_urls')) {
             // Don't convert urls
@@ -195,10 +136,6 @@ class BuilderSubscriber implements EventSubscriberInterface
         $clickthrough = $event->generateClickthrough();
         $trackables   = $this->parseContentForUrls($event, $emailId);
 
-        /**
-         * @var string
-         * @var Trackable $trackable
-         */
         foreach ($trackables as $token => $trackable) {
             $url = ($trackable instanceof Trackable)
                 ?
@@ -260,8 +197,7 @@ class BuilderSubscriber implements EventSubscriberInterface
         $routeParams = [],
         $absolute = true,
         $clickthrough = [],
-        $utmTags = [],
-        $domain = null
+        $domain = null,
     ) {
         if ($domain) {
             $parseUrl = parse_url($domain);

@@ -31,7 +31,7 @@ class Multidomain extends FormEntity
      */
     private $domain;
 
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    public static function loadValidatorMetadata(ClassMetadata $metadata): void
     {
         $metadata->addConstraint(new UniqueEntity([
             'fields' => 'email',
