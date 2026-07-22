@@ -11,12 +11,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 class MultidomainPermissions extends AbstractPermissions
 {
     /**
-     * {@inheritdoc}
+     * @param array<string, mixed> $params
      */
-    public function __construct($params)
+    public function __construct(array $params)
     {
         parent::__construct($params);
-        $this->addStandardPermissions('categories');
+        $this->addStandardPermissions(['categories']);
         $this->addExtendedPermissions('items');
     }
 
@@ -31,9 +31,10 @@ class MultidomainPermissions extends AbstractPermissions
     }
 
     /**
-     * {@inheritdoc}
+     * @param array<string, mixed> $options
+     * @param array<string, mixed> $data
      */
-    public function buildForm(FormBuilderInterface &$builder, array $options, array $data)
+    public function buildForm(FormBuilderInterface &$builder, array $options, array $data): void
     {
         $this->addStandardFormFields('multiDomain', 'categories', $builder, $data);
         $this->addExtendedFormFields('multiDomain', 'items', $builder, $data);

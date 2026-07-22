@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MauticPlugin\MauticMultiDomainBundle\Tests\Unit\EventListener;
 
-use Mautic\CoreBundle\Helper\CoreParametersHelper;
 use Mautic\CoreBundle\Twig\Helper\AssetsHelper;
 use MauticPlugin\MauticMultiDomainBundle\EventListener\FormContextSubscriber;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -27,8 +26,7 @@ class FormContextSubscriberTest extends TestCase
     protected function setUp(): void
     {
         $this->assetsHelper = new AssetsHelper(
-            $this->createMock(Packages::class),
-            $this->createMock(CoreParametersHelper::class)
+            $this->createMock(Packages::class)
         );
         $this->assetsHelper->setSiteUrl('https://mautic.example.com');
 

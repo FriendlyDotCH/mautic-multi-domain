@@ -139,7 +139,7 @@ class Multidomain extends FormEntity
     /**
      * Get Fake name to be compatable with getName of commonEntity.
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->email;
     }

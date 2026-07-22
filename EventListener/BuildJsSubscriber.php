@@ -16,7 +16,7 @@ class BuildJsSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @return array
+     * @return array<string, array<int, array<int, string|int>>>
      */
     public static function getSubscribedEvents()
     {

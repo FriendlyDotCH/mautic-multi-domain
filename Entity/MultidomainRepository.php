@@ -6,10 +6,15 @@ use Mautic\CoreBundle\Entity\CommonRepository;
 
 /**
  * MultidomainRepository.
+ *
+ * @extends CommonRepository<Multidomain>
  */
 class MultidomainRepository extends CommonRepository
 {
-    public function getByPublished($isPublished = true)
+    /**
+     * @return Multidomain[]
+     */
+    public function getByPublished(bool $isPublished = true): array
     {
         $q = $this->createQueryBuilder('f');
         $q->select('md')

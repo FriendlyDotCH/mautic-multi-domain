@@ -22,10 +22,12 @@ class MultidomainEvent extends CommonEvent
     /**
      * Returns the Multidomain entity.
      *
-     * @return MultidomainEvent
+     * @return Multidomain
      */
     public function getMultidomain()
     {
+        \assert($this->entity instanceof Multidomain);
+
         return $this->entity;
     }
 

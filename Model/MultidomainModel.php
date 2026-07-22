@@ -2,10 +2,8 @@
 
 namespace MauticPlugin\MauticMultiDomainBundle\Model;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Mautic\CoreBundle\Helper\CoreParametersHelper;
-use Mautic\CoreBundle\Helper\TemplatingHelper;
 use Mautic\CoreBundle\Helper\UserHelper;
 use Mautic\CoreBundle\Model\FormModel;
 use Mautic\CoreBundle\Security\Permissions\CorePermissions;
@@ -22,18 +20,11 @@ use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
+/**
+ * @extends FormModel<Multidomain>
+ */
 class MultidomainModel extends FormModel
 {
-    /**
-     * @var TemplatingHelper
-     */
-    protected $templating;
-
-    /**
-     * @var EntityManager
-     */
-    // private static $entityManager;
-
     public function __construct(
         EntityManagerInterface $em,
         CorePermissions $security,
@@ -101,9 +92,9 @@ class MultidomainModel extends FormModel
      *
      * @param object                              $entity
      * @param \Symfony\Component\Form\FormFactory $formFactory
-     * @param array                               $options
+     * @param array<string, mixed>                $options
      *
-     * @throws NotFoundHttpException
+     * @throws MethodNotAllowedHttpException
      */
     public function createForm($entity, $formFactory, $action = null, $options = []): \Symfony\Component\Form\FormInterface
     {
@@ -154,7 +145,7 @@ class MultidomainModel extends FormModel
         $this->getRepository()->saveEntity($entity);
     }
 
-    public function generateMessageId(Multidomain $multidomain)
+    public function generateMessageId(Multidomain $multidomain): string
     {
         $url   = $multidomain->getDomain();
         $parts = parse_url($url);
@@ -172,7 +163,7 @@ class MultidomainModel extends FormModel
      *
      * @return bool
      */
-    public static function isLightColor($hex, $level = 200)
+    public static function isLightColor(string $hex, int $level = 200)
     {
         $hex = str_replace('#', '', $hex);
         $r   = hexdec(substr($hex, 0, 2));
@@ -186,8 +177,6 @@ class MultidomainModel extends FormModel
 
     /**
      * {@inheritdoc}
-     *
-     * @return bool|MultidomainEvent|void
      *
      * @throws MethodNotAllowedHttpException
      */
@@ -228,8 +217,12 @@ class MultidomainModel extends FormModel
         return null;
     }
 
-    // Get path of the config.php file.
-    public function getConfiArray()
+    /**
+     * Get the content of the config.php file.
+     *
+     * @return array<string, mixed>
+     */
+    public function getConfiArray(): array
     {
         return include dirname(__DIR__).'/Config/config.php';
     }

@@ -3,6 +3,7 @@
 namespace MauticPlugin\MauticMultiDomainBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
+use Mautic\CoreBundle\Helper\ClickthroughHelper;
 use Mautic\CoreBundle\Helper\CoreParametersHelper;
 use Mautic\CoreBundle\Helper\EmojiHelper;
 use Mautic\EmailBundle\EmailEvents;
@@ -26,7 +27,7 @@ class BuilderSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @return array
+     * @return array<string, array<int, array<int, string|int>>>
      */
     public static function getSubscribedEvents()
     {
@@ -76,7 +77,7 @@ class BuilderSubscriber implements EventSubscriberInterface
                 $senderEmail = $ownerEmail;
             }
         }
-        if (empty($ownerEmail) && $email && $email->getFromAddress()) {
+        if (empty($ownerEmail) && $email->getFromAddress()) {
             $senderEmail = $email->getFromAddress();
         }
 
@@ -106,7 +107,7 @@ class BuilderSubscriber implements EventSubscriberInterface
         $event->addToken('{webview_text}', EmojiHelper::toHtml($webviewText));
 
         // Show public email preview if the lead is not known to prevent 404
-        if (empty($lead['id']) && $email) {
+        if (empty($lead['id'])) {
             $event->addToken('{webview_url}', $this->buildUrl('mautic_email_preview', ['objectId' => $email->getId()], true, [], $senderDomain));
         } else {
             $event->addToken('{webview_url}', $this->buildUrl('mautic_email_webview', ['idHash' => $idHash], true, [], $senderDomain));
@@ -150,6 +151,8 @@ class BuilderSubscriber implements EventSubscriberInterface
     /**
      * Parses content for URLs and tokens.
      *
+     * @param int|null $emailId
+     *
      * @return mixed
      */
     private function parseContentForUrls(EmailSendEvent $event, $emailId)
@@ -192,23 +195,32 @@ class BuilderSubscriber implements EventSubscriberInterface
         return $convertedContent[$event->getContentHash()];
     }
 
+    /**
+     * @param array<string, mixed> $routeParams
+     * @param array<string, mixed> $clickthrough
+     */
     private function buildUrl(
-        $route,
-        $routeParams = [],
-        $absolute = true,
-        $clickthrough = [],
-        $domain = null,
-    ) {
+        string $route,
+        array $routeParams = [],
+        bool $absolute = true,
+        array $clickthrough = [],
+        ?string $domain = null,
+    ): string {
         if ($domain) {
             $parseUrl = parse_url($domain);
-            $context  = $this->router->getGenerator()->getContext();
-            $context->setHost($parseUrl['host']);
-            $context->setScheme($parseUrl['scheme']);
+            $context  = $this->router->getContext();
+
+            if (!empty($parseUrl['host'])) {
+                $context->setHost($parseUrl['host']);
+            }
+            if (!empty($parseUrl['scheme'])) {
+                $context->setScheme($parseUrl['scheme']);
+            }
         }
 
         $referenceType = ($absolute) ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH;
         $url           = $this->router->generate($route, $routeParams, $referenceType);
 
-        return $url.((!empty($clickthrough)) ? '?ct='.$this->encodeArrayForUrl($clickthrough) : '');
+        return $url.((!empty($clickthrough)) ? '?ct='.ClickthroughHelper::encodeArrayForUrl($clickthrough) : '');
     }
 }

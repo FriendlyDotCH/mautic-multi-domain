@@ -127,7 +127,7 @@ class MultidomianSubscriber implements EventSubscriberInterface
             $multidomain = $this->multidomainModel->getEntity($clickthrough['multidomain_id']);
 
             foreach ($trackables as $token => $trackable) {
-                $tokens[$token] = $this->trackableModel->generateTrackableUrl($trackable, $clickthrough, false, $multidomain->getUtmTags());
+                $tokens[$token] = $this->trackableModel->generateTrackableUrl($trackable, $clickthrough, false, []);
             }
 
             $content = str_replace(array_keys($tokens), array_values($tokens), $content);

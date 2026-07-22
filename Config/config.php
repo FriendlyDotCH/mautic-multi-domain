@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'name'        => 'Multidomain',
+    'name'        => 'Friendly Multi Domain',
     'description' => 'User can add multiple tracking domains for emails.',
     'author'      => 'Abdullah Kiser / Friendly Automate',
-    'version'     => '7.0.0',
+    'version'     => '7.0.1',
     'routes'      => [
         'main' => [
             'mautic_multidomain_index' => [

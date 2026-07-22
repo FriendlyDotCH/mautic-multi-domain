@@ -65,7 +65,9 @@ class MultidomainController extends AbstractStandardFormController
     /**
      * Displays details on a spintax.
      *
-     * @return array|JsonResponse|RedirectResponse|Response
+     * @param int $objectId
+     *
+     * @return array<string, mixed>|JsonResponse|RedirectResponse|Response
      */
     public function viewAction(Request $request, $objectId)
     {
