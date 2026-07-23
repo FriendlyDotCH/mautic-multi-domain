@@ -30,7 +30,7 @@ return [
             'mautic.multidomain.menu' => [
                 'route'     => 'mautic_multidomain_index',
                 'priority'  => 10,
-                'iconClass' => 'fa-globe',
+                'iconClass' => 'ri-global-line',
             ],
         ],
     ],
