@@ -9,11 +9,11 @@ return [
         'main' => [
             'mautic_multidomain_index' => [
                 'path'       => '/multidomain/{page}',
-                'controller' => 'MauticPlugin\MauticMultiDomainBundle\Controller\MultidomainController:indexAction',
+                'controller' => 'MauticPlugin\MauticMultiDomainBundle\Controller\MultidomainController::indexAction',
             ],
             'mautic_multidomain_action' => [
                 'path'       => '/multidomain/{objectAction}/{objectId}',
-                'controller' => 'MauticPlugin\MauticMultiDomainBundle\Controller\MultidomainController:executeAction',
+                'controller' => 'MauticPlugin\MauticMultiDomainBundle\Controller\MultidomainController::executeAction',
             ],
         ],
         'api' => [
