@@ -18,7 +18,9 @@ use Symfony\Component\Routing\RouterInterface;
 class FormContextSubscriberTest extends TestCase
 {
     private AssetsHelper $assetsHelper;
-    /** @var RouterInterface&MockObject */
+    /**
+     * @var RouterInterface&MockObject
+     */
     private RouterInterface $router;
     private RequestContext $routerContext;
     private FormContextSubscriber $subscriber;

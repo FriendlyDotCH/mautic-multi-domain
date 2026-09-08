@@ -22,13 +22,18 @@ use Symfony\Component\Routing\RouterInterface;
 
 class MultidomianSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private RouterInterface $router, private IpLookupHelper $ipHelper, private AuditLogModel $auditLogModel, private TrackableModel $trackableModel, private PageTokenHelper $pageTokenHelper, private AssetTokenHelper $assetTokenHelper, private MultidomainModel $multidomainModel, private RequestStack $requestStack)
-    {
+    public function __construct(
+        private RouterInterface $router,
+        private IpLookupHelper $ipHelper,
+        private AuditLogModel $auditLogModel,
+        private TrackableModel $trackableModel,
+        private PageTokenHelper $pageTokenHelper,
+        private AssetTokenHelper $assetTokenHelper,
+        private MultidomainModel $multidomainModel,
+        private RequestStack $requestStack,
+    ) {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents()
     {
         return [

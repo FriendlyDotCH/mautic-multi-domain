@@ -117,7 +117,7 @@ class Multidomain extends FormEntity
         return $this->email;
     }
 
-    public function setEmail(string $email): Multidomain
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
@@ -129,7 +129,7 @@ class Multidomain extends FormEntity
         return $this->domain;
     }
 
-    public function setDomain(string $text): Multidomain
+    public function setDomain(string $text): self
     {
         $this->domain = $text;
 
@@ -147,7 +147,7 @@ class Multidomain extends FormEntity
     /**
      * Set Fake name to be compatable with getName of commonEntity.
      */
-    public function setName(string $email): Multidomain
+    public function setName(string $email): self
     {
         $this->email = $email;
 

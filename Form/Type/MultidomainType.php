@@ -33,9 +33,6 @@ class MultidomainType extends AbstractType
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'multidomain_type';

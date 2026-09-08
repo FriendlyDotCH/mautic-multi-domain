@@ -51,25 +51,21 @@ class MultidomainModel extends FormModel
         );
     }
 
-    /**
-     * MultidomainModel constructor.
-     */
     /*public function __construct(
-    \Mautic\FormBundle\Model\FormModel $formModel,
-    TrackableModel $trackableModel,
-    EventDispatcherInterface $dispatcher,
-    FieldModel $leadFieldModel,
-    ContactTracker $contactTracker,
-    EntityManager $entityManager
-    ) {
-    $this->formModel      = $formModel;
-    $this->trackableModel = $trackableModel;
-    // $this->templating     = $templating;
-    $this->dispatcher     = $dispatcher;
-    $this->leadFieldModel = $leadFieldModel;
-    $this->contactTracker = $contactTracker;
-
-    }*/
+     * \Mautic\FormBundle\Model\FormModel $formModel,
+     * TrackableModel $trackableModel,
+     * EventDispatcherInterface $dispatcher,
+     * FieldModel $leadFieldModel,
+     * ContactTracker $contactTracker,
+     * EntityManager $entityManager
+     * ) {
+     * $this->formModel      = $formModel;
+     * $this->trackableModel = $trackableModel;
+     * // $this->templating     = $templating;
+     * $this->dispatcher     = $dispatcher;
+     * $this->leadFieldModel = $leadFieldModel;
+     * $this->contactTracker = $contactTracker;
+     * }*/
 
     /**
      * @return string
@@ -88,8 +84,6 @@ class MultidomainModel extends FormModel
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param object                              $entity
      * @param \Symfony\Component\Form\FormFactory $formFactory
      * @param array<string, mixed>                $options
@@ -110,8 +104,6 @@ class MultidomainModel extends FormModel
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return \MauticPlugin\MauticMultiDomainBundle\Entity\MultidomainRepository
      */
     public function getRepository()
@@ -120,8 +112,6 @@ class MultidomainModel extends FormModel
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return Multidomain
      */
     public function getEntity($id = null): ?object
@@ -134,8 +124,6 @@ class MultidomainModel extends FormModel
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param Multidomain $entity
      * @param bool|false  $unlock
      */
@@ -176,8 +164,6 @@ class MultidomainModel extends FormModel
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws MethodNotAllowedHttpException
      */
     protected function dispatchEvent($action, &$entity, $isNew = false, ?Event $event = null): ?Event

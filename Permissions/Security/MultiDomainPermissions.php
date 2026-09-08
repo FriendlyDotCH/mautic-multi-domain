@@ -21,8 +21,6 @@ class MultidomainPermissions extends AbstractPermissions
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return string|void
      */
     public function getName()
